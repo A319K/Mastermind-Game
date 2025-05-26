@@ -1,0 +1,54 @@
+// Gradle build file
+// CSCI 205 - Software Engineering and Design
+// Bucknell University
+// Author - B. King / L. Romano
+// Update Log
+// 2022-Fall - added javamodularity, updated versions of javafxplugin
+// 2023-Spring - Modified testLogging events
+// 2025-Spring - Updated to prepare for some deprecation
+
+plugins{
+    id 'application'
+    id 'java'
+    id 'idea'
+    id 'org.javamodularity.moduleplugin' version '1.8.15'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+group 'org.ABAK'
+version '0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+run {
+    standardInput = System.in
+}
+
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        events "passed", "skipped", "failed", "standard_out", "standard_error"
+    }
+}
+
+javafx {
+    version = "21"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+application {
+    mainModule.set("csci205_hw")
+    mainClass.set("org.ABAK.Main")
+
+    if (project.hasProperty("mainClass")) {
+        mainClass.set(project.property("mainClass").toString())
+    }
+}
